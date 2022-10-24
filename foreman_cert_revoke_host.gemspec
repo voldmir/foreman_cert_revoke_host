@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.license = 'GPL-3.0'
   s.summary = 'Plugin to revoke certificate from host properties'
   s.test_files = Dir['test/**/*']
+  s.add_dependency "foreman", "~> 1.24.3"
   
 end
 
