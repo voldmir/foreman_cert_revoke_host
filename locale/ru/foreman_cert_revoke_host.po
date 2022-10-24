@@ -1,0 +1,22 @@
+msgid ""
+msgstr ""
+"Language-Team: Russian\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "PuppetCA URL not found."
+msgstr "PuppetCA URL не найден."
+
+msgid "Certificate not found"
+msgstr "Сертификат не найден"
+
+msgid "Successfully revoke certificate %s."
+msgstr "Сертификат '%s' успешно отозван."
+
+msgid "Revoke Certificate"
+msgstr "Отозвать сертификат"
+
+msgid "Are you sure you want to revoke certificate host %s? This action is irreversible."
+msgstr "Вы уверены, что хотите отозвать сертификат хоста '%s'? Это действие необратимо."
