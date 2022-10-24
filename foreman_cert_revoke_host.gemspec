@@ -8,12 +8,12 @@ Gem::Specification.new do |s|
   s.authors       = ["Vladimir Savchenko"]
   s.email         = ["voldmir@mail.ru"]
 
-  s.description = 'Plugin to revoke certificate from host properties'
+  s.description = 'Plugin to revoke certificate from host properties.'
   s.extra_rdoc_files = ['README.md']
   s.files = Dir['{app,lib,config,locale}/**/*'] + ['README.md']
   s.homepage      = "https://github.com/voldmir/foreman_cert_revoke_host"
   s.license = 'GPL-3.0'
-  s.summary = 'Plugin to revoke certificate from host properties'
+  s.summary = 'Plugin to revoke host certificate.'
   s.test_files = Dir['test/**/*']
   s.add_runtime_dependency "foreman", "~> 1.24"
   
