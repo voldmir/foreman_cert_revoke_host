@@ -18,7 +18,7 @@ module ForemanCertRevokeHost
 
     initializer 'foreman_cert_revoke_host.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_cert_revoke_host do
-        requires_foreman '>= 1.17'
+        requires_foreman '~> 1.24'
         
         security_block :foreman_cert_revoke_host do
           permission :cert_revoke_hosts, { :hosts => [:cert_revoke] }, :resource_type => 'Host'
