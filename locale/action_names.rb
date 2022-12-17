@@ -2,5 +2,5 @@
 _("PuppetCA URL not found.")
 _("Certificate not found")
 _("Successfully revoke certificate %s.")
-_("Revoke Certificate"
+_("Revoke Certificate")
 _("Are you sure you want to revoke certificate host %s? This action is irreversible.")

@@ -2,27 +2,44 @@ module ForemanCertRevokeHost
   module HostsControllerExt
     extend ActiveSupport::Concern
 
+    included do
+      alias_method :find_resource_for_revoke, :find_resource
+      before_action :find_resource_for_revoke, only: [:cert_revoke]
+    end
+
     def cert_revoke
-      find_resource
+      if (result = revoke)[:status]
+        process_success :redirect => :back, :success_msg => result[:msg]
+      else
+        process_error :redirect => :back, :error_msg => result[:msg]
+      end
+    end
 
-      url = @host.puppet_ca_proxy_id.nil? ?
-        Feature.where(:name => "Puppet CA").map { |feature| feature.smart_proxies.map { |p| p.url } }.flatten.first :
-        SmartProxy.where(:id => @host.puppet_ca_proxy_id).pluck(:url).first
+    module DestroyOverrides
+      def destroy
+        super
+        revoke
+      end
+    end
 
-      return process_error(:error_msg => _("PuppetCA URL not found.")) unless url
+    private
 
+    def revoke
       begin
+        url = @host.puppet_ca_proxy_id.nil? ?
+          Feature.where(:name => "Puppet CA").map { |feature| feature.smart_proxies.map { |p| p.url } }.flatten.first :
+          SmartProxy.where(:id => @host.puppet_ca_proxy_id).pluck(:url).first
+
+        raise ProxyAPI::ProxyException.new("no url", RuntimeError.new, _("PuppetCA URL not found.")) unless url
+
         puppetca = ProxyAPI::Puppetca.new(:url => url)
         raise ProxyAPI::ProxyException.new(url, RuntimeError.new, _("Certificate not found")) if @host.certname.nil?
         puppetca.del_certificate @host.certname
       rescue ProxyAPI::ProxyException => e
-        return process_error :redirect => :back, :error_msg => e.message
+        return { :status => false, :msg => e.message }
       end
-
-      process_success :redirect => :back, :success_msg => _("Successfully revoke certificate %s.") % @host
+      return { :status => true, :msg => _("Successfully revoke certificate %s.") % @host }
     end
-
-    private
 
     def action_permission
       case params[:action]

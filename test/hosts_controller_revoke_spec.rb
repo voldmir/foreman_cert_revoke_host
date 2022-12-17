@@ -1,5 +1,5 @@
 require "rspec"
-require_relative '.\base_class'
+Dir[File.dirname(__FILE__) + "/models/*.rb"].each { |file| require file }
 require_relative '..\app\controllers\concerns\foreman_cert_revoke_host\hosts_controller_ext'
 
 RSpec.describe HostsController do
@@ -17,7 +17,7 @@ RSpec.describe HostsController do
 
   it "PuppetCA URL not found" do
     hc = HostsController.new({ action: "cert_revoke", id: "host.example.loc", puppet_ca_proxy_id: 5, certname: "host.example.loc" })
-    expect(hc.cert_revoke).to eq("{:error_msg=>\"PuppetCA URL not found.\"}")
+    expect(hc.cert_revoke).to eq("{:redirect=>:back, :error_msg=>\"PuppetCA URL not found. for proxy no url\"}")
   end
 
   it "cert_revoke method get url from class Feature" do
@@ -33,5 +33,10 @@ RSpec.describe HostsController do
   it "cert_revoke empty certname" do
     hc = HostsController.new({ action: "cert_revoke", id: "host.example.loc", puppet_ca_proxy_id: 1, certname: nil })
     expect(hc.cert_revoke).to eq("{:redirect=>:back, :error_msg=>\"Certificate not found for proxy http://foreman.localhost:8000\"}")
+  end
+
+  it "host destroy" do
+    hc = HostsController.new({ action: "cert_revoke", id: "host.example.loc", puppet_ca_proxy_id: 1, certname: nil })
+    expect(hc.destroy).to eq("removed")
   end
 end
